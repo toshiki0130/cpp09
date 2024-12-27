@@ -15,3 +15,15 @@ double stringToDouble(const std::string& str) {
 
     return value;
 }
+
+bool isDigit(const std::string& number) {
+    if (number.empty()) {
+        return false;
+    }
+    for (std::string::size_type i=0; i < number.size(); i++) {
+        if (!std::isdigit(number[i])) {
+            return false;
+        }
+    }
+    return true;
+}
