@@ -11,6 +11,8 @@
                 "-g",
                 "${fileDirname}/Utils.cpp",
                 "-g",
+                "${fileDirname}/Date.cpp",
+                "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
