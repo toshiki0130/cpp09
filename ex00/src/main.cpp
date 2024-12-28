@@ -35,17 +35,15 @@ int main(int argc, char **argv)
 }
 
 void parseLine(const std::string &line, std::string &date, double &value) {
-   size_t pos = line.find('|');
+   size_t pos = line.find(" | ");
    if (pos == std::string::npos) {
-      std::cerr << "Error: Invalid line." << std::endl;
-      throw BitcoinExchange::Exception("Invalid line: " + line);
+      throw BitcoinExchange::Exception("Error: Invalid line: " + line);
    }
    date = line.substr(0, pos);
-   std::string value_str = line.substr(pos + 1);
+   std::string value_str = line.substr(pos + 3);
    value = stringToDouble(value_str);
    if (value < 0 || value > 1000) {
-      std::cerr << "Error: Invalid value." << std::endl;
-      throw BitcoinExchange::Exception("Invalid value range: " + value_str);
+      throw BitcoinExchange::Exception("Error: too large a number: " + value_str + ".");
    }
 }
 
