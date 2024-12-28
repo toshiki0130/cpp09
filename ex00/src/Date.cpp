@@ -1,6 +1,7 @@
 #include "Date.hpp"
 #include "Utils.hpp"
 #include <iostream>
+#include <cstdlib>
 
 // Orthodox canonical form
 Date::Date() : year(1970), month(1), day(1) {}
@@ -16,25 +17,25 @@ Date& Date::operator=(const Date &other) {
     return *this;
 }
 
-Date::~Date() {}
+Date::~Date() throw() {}
 
 // Constructor
 Date::Date(const std::string &date_str) {
     // format is yyyy-mm-dd
     if (date_str.length() != 10) {
         std::cerr << "Invalid date format: " << date_str << std::endl;
-        // Exception
+        throw Date::Exception("Invalid date format: " + date_str);
     }
     if (date_str[4] != '-' || date_str[7] != '-') {
         std::cerr << "Invalid date format: " << date_str << std::endl;
-        // Exception
+        throw Date::Exception("Invalid date format: " + date_str);
     }
     std::string year_str = date_str.substr(0, 4);
     std::string month_str = date_str.substr(5, 2);
     std::string day_str = date_str.substr(8, 2);
     if (!isDigit(year_str) || !isDigit(month_str) || !isDigit(day_str)) {
         std::cerr << "Invalid format: " << date_str << std::endl;
-        // Exception;
+        throw Date::Exception("Invalid date format: " + date_str);
     }
     year = std::atoi(year_str.c_str());
     month = std::atoi(month_str.c_str());
@@ -98,7 +99,7 @@ Date::Exception& Date::Exception::operator=(const Exception &other) {
     return *this;
 }
 
-Date::Exception::~Exception() {}
+Date::Exception::~Exception() throw() {}
 
 const char* Date::Exception::what() const throw() {
     return _msg.c_str();

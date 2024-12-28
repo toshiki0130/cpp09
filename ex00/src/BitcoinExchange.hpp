@@ -13,17 +13,18 @@ public:
     BitcoinExchange();
     BitcoinExchange(const BitcoinExchange &other);
     BitcoinExchange &operator=(const BitcoinExchange &other);
-    ~BitcoinExchange();
+    ~BitcoinExchange() throw();
     // constructor
     explicit BitcoinExchange(const std::string &filename);
+    // member functions
     double getRate(const std::string &date) const;
     
-    class Exception : public std::exception {
+    class  Exception : public std::exception {
     public:
         explicit Exception(const std::string &msg);
         Exception(const Exception &other);
         Exception &operator=(const Exception &other);
-        ~Exception();
+        ~Exception() throw();
         const char* what() const throw();
     private:
         std::string _msg;

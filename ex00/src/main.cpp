@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "BitcoinExchange.hpp"
 #include "Utils.hpp"
+#include "Date.hpp"
 
 #define BITCOIN_CHART_FILE "data.csv"
 
@@ -34,16 +35,22 @@ int main(int argc, char **argv)
    return EXIT_SUCCESS;
 }
 
-void parseLine(const std::string &line, std::string &date, double &value) {
+void parseLine(const std::string &line, std::string &date, float &value) {
    size_t pos = line.find(" | ");
    if (pos == std::string::npos) {
       throw BitcoinExchange::Exception("Error: Invalid line: " + line);
    }
    date = line.substr(0, pos);
+   try {
+      Date d(date);
+   }
+   catch (Date::Exception &e) {
+      throw BitcoinExchange::Exception(e.what());
+   }
    std::string value_str = line.substr(pos + 3);
    value = stringToDouble(value_str);
    if (value < 0 || value > 1000) {
-      throw BitcoinExchange::Exception("Error: too large a number: " + value_str + ".");
+      throw BitcoinExchange::Exception("Error: value must be between 1 and 1000: " + value_str + ".");
    }
 }
 
@@ -61,9 +68,14 @@ void run(const BitcoinExchange &bitcoinExchange, std::ifstream &file) {
    // parse data
    while (std::getline(file, line)) {
       std::string date;
-      double value;
-      parseLine(line, date, value);
-      double rate = bitcoinExchange.getRate(date);
-      std::cout << "Date: " << date << " => " << value << " => " << value * rate << std::endl;
+      float value;
+      try {
+         parseLine(line, date, value);
+         double rate = bitcoinExchange.getRate(date);
+         std::cout << "Date: " << date << " => " << value << " => " << value * rate << std::endl;
+      }
+      catch (BitcoinExchange::Exception &e) {
+         std::cerr << e.what() << std::endl;
+      }
    }
 }

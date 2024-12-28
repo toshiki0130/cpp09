@@ -8,14 +8,14 @@ public:
     Date();
     Date(const Date &other);
     Date &operator=(const Date &other);
-    ~Date();
+    ~Date() throw();
     // Exception
     class Exception : public std::exception {
     public:
         explicit Exception(const std::string &msg);
         Exception(const Exception &other);
         Exception &operator=(const Exception &other);
-        ~Exception();
+        ~Exception() throw();
         const char* what() const throw();
     private:
         std::string _msg;

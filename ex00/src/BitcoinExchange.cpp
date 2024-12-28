@@ -16,7 +16,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
     return *this;
 }
 
-BitcoinExchange::~BitcoinExchange() {}
+BitcoinExchange::~BitcoinExchange() throw() {}
 
 // constructor
 BitcoinExchange::BitcoinExchange(const std::string &filename) {
@@ -59,7 +59,7 @@ BitcoinExchange::BitcoinExchange(const std::string &filename) {
 double BitcoinExchange::getRate(const std::string &date) const {
     std::map<std::string, double>::const_iterator it = m_bitcoinPrices.upper_bound(date);
     if (it == m_bitcoinPrices.begin()) {
-        std::cerr << "Error: no data available for date '" << date << "'." << std::endl;
+        throw BitcoinExchange::Exception("Error: This date is not available: " + date + ".");
     } else {
         --it;
     }
@@ -77,7 +77,7 @@ BitcoinExchange::Exception& BitcoinExchange::Exception::operator=(const BitcoinE
     return *this;
 }
 
-BitcoinExchange::Exception::~Exception() {}
+BitcoinExchange::Exception::~Exception() throw () {}
 const char* BitcoinExchange::Exception::what() const throw() {
     return _msg.c_str();
 }
