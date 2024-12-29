@@ -1,16 +1,27 @@
 #include "RPN.hpp"
 #include <iostream>
+#include <cstdlib>
 
-void run(char *exp);
+int run(char *exp);
 
 int main(int argc, char *argv[]) {
-    run(argv[1]);
+    if (argc != 2) {
+        std::cerr << "Usage example: RPN '8 9 * 9 - 9 - 9 - 4 - 1 +'" << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << run(argv[1]) << std::endl;
 }
 
-void run(char *exp)
+int run(char *exp)
 {
+    RPN rpn;
     while (*exp) {
-        std::cout << *exp << std::endl;
+        if (*exp == ' ') {
+            exp++;
+            continue;
+        }
+        rpn.push(*exp);
         exp++;
     }
+    return rpn.getTop();
 }
