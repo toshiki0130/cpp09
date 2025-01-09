@@ -1,5 +1,6 @@
 #include "RPN.hpp"
 #include <cctype>
+#include <iostream>
 
 // constructor
 RPN::RPN() {}
@@ -25,6 +26,9 @@ void RPN::push(char c) {
     }
     else if (_isOperator(c))
     {
+        if (_n_stack.size() < 2) {
+            throw Exception("Error: invalid expression");
+        }
         int rv = _n_stack.top();
         _n_stack.pop();
         int lv = _n_stack.top();
@@ -43,13 +47,29 @@ void RPN::push(char c) {
         }
     }
     else {
-        return; 
+        throw Exception("Error: Invalid char: " + std::string(1, c)); 
     }
 }
 
 int RPN::getTop() {
     return _n_stack.top();
 }
+
+size_t RPN::size() {
+    return _n_stack.size();
+}
+
+// Exception
+RPN::Exception::Exception(const std::string& msg) {
+    _msg = msg;
+}
+
+RPN::Exception::~Exception() throw() {}
+
+const char* RPN::Exception::what() const throw() {
+    return _msg.c_str();
+}
+
 
 // private functions
 bool RPN::_isOperator(char c) {

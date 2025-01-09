@@ -28,10 +28,17 @@ fclean: clean
 re: fclean all
 
 test: re
-	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
-	./$(NAME) "7 7 * 7 -"
-	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
-	./$(NAME) "(1 + 1)"
+	-.$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	-./$(NAME) "7 7 * 7 -"
+	-./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	-./$(NAME) "(1 + 1)"
+	-./$(NAME) "8 9 * +"
+	-./$(NAME) "8 9 * 3"
+	-./$(NAME) "+"
+	-./$(NAME) ""
+	-./$(NAME) "  "
+	-./$(NAME) "abc"
+
 
 .PHONY: all clean fclean re run format debug leakcheck
 

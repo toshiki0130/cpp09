@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Usage example: RPN '8 9 * 9 - 9 - 9 - 4 - 1 +'" << std::endl;
         return EXIT_FAILURE;
     }
-    std::cout << run(argv[1]) << std::endl;
+    return run(argv[1]);
 }
 
 int run(char *exp)
@@ -20,8 +20,19 @@ int run(char *exp)
             exp++;
             continue;
         }
-        rpn.push(*exp);
+        try {
+            rpn.push(*exp);
+        }
+        catch (std::exception &e) {
+            std::cerr << e.what() << std::endl;
+            return EXIT_FAILURE;
+        }
         exp++;
     }
-    return rpn.getTop();
+    if (rpn.size() != 1) {
+        std::cerr << "Error: final stack size is not 1." << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << rpn.getTop() << std::endl;
+    return EXIT_SUCCESS;
 }
