@@ -98,6 +98,7 @@ void validateArgs(int argc, char *argv[]) throw(std::invalid_argument) {
 int main(int argc, char *argv[]) {
     try {
         std::cout << INT_MAX << std::endl;
+        std::cout << LONG_MAX << std::endl;
         validateArgs(argc, argv);
     }
     catch (const std::invalid_argument& e) {
