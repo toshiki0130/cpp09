@@ -27,33 +27,5 @@ fclean: clean
 
 re: clean all
 
-debug: CXXFLAGS += -D DEBUG
-debug: re
 
-bench: CXXFLAGS += -D BENCH
-bench: re run
-
-run: $(NAME)
-	./$(NAME) | tail -n +3
-	./$(NAME) `jot -r 1 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 2 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 3 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 4 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 5 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 21 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 31 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 32 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 33 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 100 1 100000 | tr '\n' ' '`
-	./$(NAME) `jot -r 1000 1 100000 | tr '\n' ' '` | tail -n +3
-	./$(NAME) `jot -r 10000 1 100000 | tr '\n' ' '` | tail -n +3
-	./$(NAME) `jot -r 50000 1 100000 | tr '\n' ' '` | tail -n +3
-
-leakcheck: $(NAME)
-	leaks --atExit -q -- ./$(NAME)
-
-format:
-	clang-format -style=google $(SRCS) $(INCLUDES) -i
-	cppcheck --enable=all --inconclusive --suppress=missingIncludeSystem . -I .
-
-.PHONY: all clean fclean re run format debug leakcheck
+.PHONY: all clean fclean re run

@@ -28,4 +28,4 @@ fclean: clean
 re: fclean all
 
 
-.PHONY: all clean fclean re run format debug leakcheck
+.PHONY: all clean fclean re

@@ -34,11 +34,12 @@ test: re
 	-./$(NAME) "(1 + 1)"
 	-./$(NAME) "8 9 * +"
 	-./$(NAME) "8 9 * 3"
+	-./$(NAME) "8.5 9 * 3"
 	-./$(NAME) "+"
 	-./$(NAME) ""
 	-./$(NAME) "  "
 	-./$(NAME) "abc"
 
 
-.PHONY: all clean fclean re run format debug leakcheck
+.PHONY: all clean fclean re test
 

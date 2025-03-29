@@ -2,6 +2,7 @@
 #include "Utils.hpp"
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 // Orthodox canonical form
 Date::Date() : year(1970), month(1), day(1) {}
@@ -70,20 +71,28 @@ int Date::_getDaysInMonth() {
 
 void Date::_validate() {
     if (year < 0 || year > 3000) {
-        std::cerr << "This year is out of range: " << year << std::endl;
-        throw Exception("This year is out of range: " + year);
+        std::ostringstream oss;
+        oss << "This year is out of range: " << year;
+        std::cerr << oss.str() << std::endl;
+        throw Exception(oss.str());
     }
     if (month < 1 || month > 12) {
-        std::cerr << "This month is out of range: " << month << std::endl;
-        throw Exception("This month is out of range: " + month);
+        std::ostringstream oss;
+        oss << "This month is out of range: " << month;
+        std::cerr << oss.str() << std::endl;
+        throw Exception(oss.str());
     }
     if (day < 1 || day > 31) {
-        std::cerr << "This day is out of range: " << day << std::endl;
-        throw Exception("This day is out of range: " + day);
+        std::ostringstream oss;
+        oss << "This day is out of range: " << day;
+        std::cerr << oss.str() << std::endl;
+        throw Exception(oss.str());
     }
     if (day > _getDaysInMonth()) {
-        std::cerr << "This day is out of range: " << day << std::endl;
-        throw Exception("This day is out of range: " + day);
+        std::ostringstream oss;
+        oss << "This day is out of range: " << day;
+        std::cerr << oss.str() << std::endl;
+        throw Exception(oss.str());
     }
 }
 
