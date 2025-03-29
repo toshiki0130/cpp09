@@ -41,5 +41,5 @@ test: re
 	-./$(NAME) "abc"
 
 
-.PHONY: all clean fclean re run format debug leakcheck
+.PHONY: all clean fclean re test
 
