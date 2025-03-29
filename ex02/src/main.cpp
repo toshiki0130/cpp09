@@ -47,14 +47,17 @@ void run_sort(std::vector<int> &orig) {
         << " elements with std::deque : " << std::fixed << std::setprecision(6) << elapsed_d << "s" << std::endl;
 }
 
-int stringToDouble(const std::string &str) throw(std::invalid_argument) {
+int stringToInt(const std::string &str) throw(std::invalid_argument, std::out_of_range) {
     if (str.empty()) {
         throw std::invalid_argument("empty string");
     }
     char *end;
-    int result = std::strtol(str.c_str(), &end, 10);
+    long result = std::strtol(str.c_str(), &end, 10);
     if (*end != '\0') {
         throw std::invalid_argument("invalid string");
+    }
+    if (result < INT_MIN || result > INT_MAX) {
+        throw std::out_of_range("Integer out of range");      
     }
     return result;
 }
@@ -97,8 +100,6 @@ void validateArgs(int argc, char *argv[]) throw(std::invalid_argument) {
 
 int main(int argc, char *argv[]) {
     try {
-        std::cout << INT_MAX << std::endl;
-        std::cout << LONG_MAX << std::endl;
         validateArgs(argc, argv);
     }
     catch (const std::invalid_argument& e) {
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]) {
     }
     std::vector<int> orig;
     for (int i=1; i < argc; i++) {
-        orig.push_back(stringToDouble(argv[i]));
+        orig.push_back(stringToInt(argv[i]));
     }
     run_sort(orig);
     return 0;

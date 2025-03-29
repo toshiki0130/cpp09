@@ -7,7 +7,6 @@
 #include <cmath>
 #include <algorithm>
 
-typedef std::vector<int>::iterator VecIt;
 class PmergeMe {
 public:
     // Orthodx Canonical Form
@@ -20,8 +19,8 @@ public:
     template <typename T> static void merge_insert_sort(T &container);
 private:
     // Private Methods
-    template <typename T> static void sort_impl(T &container, int pair_level);
-    template <typename T> static void swap_pair(T &it, int pair_level);
+    template <typename T> static void sort_impl(T &container, int pair_size);
+    template <typename T> static void swap_pair(T &it, int pair_size);
 };
 
 long jacobsthal_number(long n);
@@ -43,49 +42,49 @@ void PmergeMe::merge_insert_sort(T &container) {
 }
 
 template <typename T>
-void PmergeMe::swap_pair(T &it, int pair_level) {
-    T start = next(it, -pair_level + 1);
-    T end = next(start, pair_level);
+void PmergeMe::swap_pair(T &it, int pair_size) {
+    T start = next(it, -pair_size + 1);
+    T end = next(start, pair_size);
     while (start != end)
     {
-        std::iter_swap(start, next(start, pair_level));
+        std::iter_swap(start, next(start, pair_size));
         start++;
     }
 }
 
 
 template <typename T>
-void PmergeMe::sort_impl(T &container, int pair_level) {
+void PmergeMe::sort_impl(T &container, int pair_size) {
 
     typedef typename T::iterator Iterator;
-    int pair_unit_size= container.size() / pair_level;
-    if (pair_unit_size < 2)
+    int pair_unit_num= container.size() / pair_size;
+    if (pair_unit_num < 2)
         return;
-    bool is_odd = pair_unit_size % 2 == 1;
+    bool is_odd = pair_unit_num % 2 == 1;
     Iterator start = container.begin();
-    Iterator last = next(container.begin(), pair_level * pair_unit_size);
-    Iterator end = next(last, -(is_odd * pair_level));
+    Iterator last = next(container.begin(), pair_size * pair_unit_num);
+    Iterator end = next(last, -(is_odd * pair_size));
 
-    int jump = pair_level * 2;
+    int jump = pair_size * 2;
     for (Iterator it = start; it != end; std::advance(it, jump)) {
-        Iterator this_pair = next(it, pair_level - 1);
-        Iterator next_pair = next(it, pair_level * 2 -1);
+        Iterator this_pair = next(it, pair_size - 1);
+        Iterator next_pair = next(it, pair_size * 2 -1);
         if (*this_pair > *next_pair) {
-            swap_pair(this_pair, pair_level);
+            swap_pair(this_pair, pair_size);
         }
     }
-    sort_impl(container, pair_level * 2);
+    sort_impl(container, pair_size * 2);
     std::vector<Iterator> main;
     std::vector<Iterator> pend;
-    main.insert(main.end(), next(container.begin(), pair_level - 1));
-    main.insert(main.end(), next(container.begin(), pair_level * 2 - 1));
-    for (int i = 4; i <= pair_unit_size; i += 2) {
-        main.insert(main.end(), next(container.begin(), pair_level * i - 1));
-        pend.insert(pend.end(), next(container.begin(), pair_level * (i - 1) - 1));
+    main.insert(main.end(), next(container.begin(), pair_size - 1));
+    main.insert(main.end(), next(container.begin(), pair_size * 2 - 1));
+    for (int i = 4; i <= pair_unit_num; i += 2) {
+        main.insert(main.end(), next(container.begin(), pair_size * i - 1));
+        pend.insert(pend.end(), next(container.begin(), pair_size * (i - 1) - 1));
     }
     int prev_jacobsthal = jacobsthal_number(1);
     int inserted_numbers = 0;
-    for (int k = 2;; k ++){
+    for (int k = 2;; k++){
         int curr_jacobsthal = jacobsthal_number(k);
         int  jacobsthal_diff = curr_jacobsthal - prev_jacobsthal;
         if (jacobsthal_diff > static_cast<int>(pend.size())) {
@@ -114,16 +113,16 @@ void PmergeMe::sort_impl(T &container, int pair_level) {
         main.insert(idx, *curr_pend);
     }
     if (is_odd) {
-        Iterator odd_pair = next(end, pair_level - 1);
+        Iterator odd_pair = next(end, pair_size - 1);
         typename std::vector<Iterator>::iterator idx = 
             std::upper_bound(main.begin(), main.end(), odd_pair, _comp<Iterator>);
         main.insert(idx, odd_pair);
     }
     std::vector<int> copy;
     for (typename std::vector<Iterator>::iterator it = main.begin(); it != main.end(); it++) {
-        for (int j = 0; j < pair_level; j++) {
+        for (int j = 0; j < pair_size; j++) {
             Iterator curr = *it;
-            std::advance(curr, - pair_level + 1 + j);
+            std::advance(curr, - pair_size + 1 + j);
             copy.insert(copy.end(), *curr);
         }
     }
