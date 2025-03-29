@@ -31,4 +31,4 @@ public:
     };
 };
 
-#endif // BITCOINEXCHANGE_HPP
+#endif

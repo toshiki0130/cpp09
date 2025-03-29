@@ -5,7 +5,7 @@
 #include "Utils.hpp"
 #include "Date.hpp"
 
-#define BITCOIN_CHART_FILE "data.csv"
+#define BITCOIN_CHART_FILE "./src/data.csv"
 
 void run(const BitcoinExchange &bitcoinExchange, std::ifstream &file);
 
